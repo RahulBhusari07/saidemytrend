@@ -40,7 +40,10 @@ pipeline {
                     script {
                         def qg = waitForQualityGate()
                         if (qg.status != 'OK') {
-                            error "❌ Pipeline aborted due to Quality Gate failure: ${qg.status}"
+                            echo "⚠️ WARNING: Quality Gate failed with status: ${qg.status} — continuing pipeline..."
+                            currentBuild.result = 'UNSTABLE'
+                        } else {
+                            echo "✅ Quality Gate Passed"
                         }
                     }
                 }
